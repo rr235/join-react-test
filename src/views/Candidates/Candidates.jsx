@@ -1,6 +1,18 @@
 import React from 'react';
 import { Typography, Grid } from '@material-ui/core';
 import ApplicationCard from '../../components/ApplicationCard';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(({ spacing }) => ({
+  heading: {
+    fontSize: spacing(8),
+  },
+  container: {
+    backgroundColor: '#F3F4F7',
+    padding: '10px',
+    height: '100vh',
+  },
+}));
 
 const candidateList = [
   {
@@ -42,23 +54,30 @@ const candidateList = [
 const Candidates = () => {
   const listCandidates = () =>
     candidateList.map(({ fullName, email, avatar, state, applied_on }) => (
-      <Grid item>
+      <Grid item xs={12}>
         <ApplicationCard
           name={fullName}
           email={email}
           avatar={avatar}
           status={state}
           date={applied_on}
+          progress={75}
         />
       </Grid>
     ));
 
+  const classes = useStyles();
+
   return (
-    <div>
-      <Typography variant="h1">Candidates</Typography>
-      <Grid container spacing={2} direction="column">
-        {listCandidates()}
-      </Grid>
+    <div className={classes.container}>
+      <Typography variant="h1" className={classes.heading}>
+        Candidates
+      </Typography>
+      <div>
+        <Grid container spacing={2} direction="column">
+          {listCandidates()}
+        </Grid>
+      </div>
     </div>
   );
 };
