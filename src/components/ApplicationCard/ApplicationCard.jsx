@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
   Grid,
   Avatar,
   CircularProgress,
+  IconButton,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { MoreHoriz } from '@material-ui/icons';
 
 const useStyles = makeStyles(({ spacing }) => ({
   avatar: {
@@ -60,10 +64,50 @@ const useStyles = makeStyles(({ spacing }) => ({
   info: {
     fontSize: '0.75rem',
   },
+  actions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  actionsButton: {
+    padding: '0 5px',
+  },
 }));
 
-const ApplicationCard = ({ name, email, avatar, status, date, progress }) => {
+const STATUS_NOT_FIT = 'STATUS_NOT_FIT';
+const STATUS_IN_REVIEW = 'STATUS_IN_REVIEW';
+
+const ApplicationCard = ({
+  name,
+  email,
+  avatar,
+  status,
+  date,
+  progress,
+  onStatusChange,
+  onDelete,
+}) => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuId = `menu-${Date.now()}`;
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
+    handleClose();
+    onDelete();
+  };
+
+  const handleStatusChange = (status) => {
+    handleClose();
+    onStatusChange(status);
+  };
+
   return (
     <Card>
       <CardContent>
@@ -94,6 +138,31 @@ const ApplicationCard = ({ name, email, avatar, status, date, progress }) => {
             <span className={classes.status}>{status}</span>
             <div className={classes.info}> Application info: {date}</div>
           </Grid>
+          <Grid item className={classes.actions}>
+            <IconButton
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleClick}
+              className={classes.actionsButton}
+            >
+              <MoreHoriz />
+            </IconButton>
+            <Menu
+              id={menuId}
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => handleStatusChange(STATUS_IN_REVIEW)}>
+                In Review
+              </MenuItem>
+              <MenuItem onClick={() => handleStatusChange(STATUS_NOT_FIT)}>
+                Not a Fit
+              </MenuItem>
+              <MenuItem onClick={handleDelete}>Delete</MenuItem>
+            </Menu>
+          </Grid>
         </Grid>
       </CardContent>
     </Card>
@@ -101,3 +170,4 @@ const ApplicationCard = ({ name, email, avatar, status, date, progress }) => {
 };
 
 export default ApplicationCard;
+export { STATUS_IN_REVIEW, STATUS_NOT_FIT };

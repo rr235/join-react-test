@@ -53,18 +53,20 @@ const candidateList = [
 
 const Candidates = () => {
   const listCandidates = () =>
-    candidateList.map(({ fullName, email, avatar, state, applied_on }) => (
-      <Grid item xs={12}>
-        <ApplicationCard
-          name={fullName}
-          email={email}
-          avatar={avatar}
-          status={state}
-          date={applied_on}
-          progress={75}
-        />
-      </Grid>
-    ));
+    candidateList.map(
+      ({ fullName, email, avatar, state, applied_on }, index) => (
+        <Grid item xs={12} key={index}>
+          <ApplicationCard
+            name={fullName}
+            email={email}
+            avatar={avatar}
+            status={state}
+            date={applied_on}
+            progress={75}
+          />
+        </Grid>
+      )
+    );
 
   const classes = useStyles();
 
