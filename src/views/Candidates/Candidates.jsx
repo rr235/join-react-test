@@ -3,14 +3,23 @@ import { connect } from 'react-redux';
 import { Typography, Grid, CircularProgress } from '@material-ui/core';
 import ApplicationCard from '../../components/ApplicationCard';
 import useStyles from './styles';
-import { fetchCandidates } from '../../actions';
+import { fetchCandidates, removeCandidate } from '../../actions';
 
-const Candidates = ({ isLoading, candidates, fetchCandidates }) => {
+const Candidates = ({
+  isLoading,
+  candidates,
+  fetchCandidates,
+  removeCandidate,
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
     fetchCandidates();
   }, [fetchCandidates]);
+
+  const onDeleteHandler = (email) => {
+    removeCandidate(email);
+  };
 
   const listCandidates = () =>
     candidates.map(({ fullName, email, avatar, state, applied_on }, index) => (
@@ -22,6 +31,7 @@ const Candidates = ({ isLoading, candidates, fetchCandidates }) => {
           status={state}
           date={applied_on}
           progress={75}
+          onDelete={onDeleteHandler}
         />
       </Grid>
     ));
@@ -49,10 +59,18 @@ const Candidates = ({ isLoading, candidates, fetchCandidates }) => {
   );
 };
 
-const mapStateToProps = ({ fetchCandidates, candidates, isLoading }) => ({
-  fetchCandidates,
+const mapStateToProps = ({
   candidates,
   isLoading,
+  fetchCandidates,
+  removeCandidate,
+}) => ({
+  candidates,
+  isLoading,
+  fetchCandidates,
+  removeCandidate,
 });
 
-export default connect(mapStateToProps, { fetchCandidates })(Candidates);
+export default connect(mapStateToProps, { fetchCandidates, removeCandidate })(
+  Candidates
+);

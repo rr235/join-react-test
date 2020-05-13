@@ -39,7 +39,7 @@ const ApplicationCard = ({
 
   const handleDelete = () => {
     handleClose();
-    onDelete();
+    onDelete(email);
   };
 
   const handleStatusChange = (status) => {
