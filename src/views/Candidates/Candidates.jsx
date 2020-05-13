@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid, CircularProgress } from '@material-ui/core';
 import ApplicationCard from '../../components/ApplicationCard';
 import useStyles from './styles';
 import { fetchCandidates } from '../../actions';
 
-const Candidates = ({ candidates, fetchCandidates }) => {
+const Candidates = ({ isLoading, candidates, fetchCandidates }) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -26,12 +26,21 @@ const Candidates = ({ candidates, fetchCandidates }) => {
       </Grid>
     ));
 
+  const showLoading = () =>
+    isLoading ? (
+      <div className={classes.loading}>
+        <CircularProgress size={20} />
+        <span className={classes.loadingText}>Getting list of candidates</span>
+      </div>
+    ) : null;
+
   return (
     <div className={classes.container}>
       <Typography variant="h1" className={classes.heading}>
         Candidates
       </Typography>
       <div>
+        {showLoading()}
         <Grid container spacing={2} direction="column">
           {listCandidates()}
         </Grid>
@@ -40,9 +49,10 @@ const Candidates = ({ candidates, fetchCandidates }) => {
   );
 };
 
-const mapStateToProps = ({ fetchCandidates, candidates }) => ({
+const mapStateToProps = ({ fetchCandidates, candidates, isLoading }) => ({
   fetchCandidates,
   candidates,
+  isLoading,
 });
 
 export default connect(mapStateToProps, { fetchCandidates })(Candidates);
