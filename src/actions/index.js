@@ -36,7 +36,7 @@ export const addCandidate = (info) => () => {
   const candidate = { ...info, score };
 
   /* Mock Save */
-  let candidatesList = JSON.parse(sessionStorage.getItem('candidates')) || [];
+  const candidatesList = JSON.parse(sessionStorage.getItem('candidates')) || [];
   candidatesList.push(candidate);
   sessionStorage.setItem('candidates', JSON.stringify(candidatesList));
 

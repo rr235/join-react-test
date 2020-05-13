@@ -8,7 +8,8 @@
     "expect": false,
     "beforeAll": false,
     "beforeEach": false,
-    "document": false
+    "document": false,
+    "sessionStorage": false
   },
   "rules": {
     "no-shadow": 1
