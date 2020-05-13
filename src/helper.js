@@ -1,9 +1,9 @@
 export const getCandidateScore = (candidate) => {
   let score = 0;
-  if (candidate.fullName) {
+  if (candidate.fullName.trim()) {
     score += 10;
   }
-  if (candidate.email) {
+  if (candidate.email.trim()) {
     score += 10;
   }
   if (candidate.password) {

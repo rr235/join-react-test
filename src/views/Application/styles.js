@@ -21,6 +21,15 @@ const useStyles = makeStyles(({ spacing }) => ({
     '& label': {
       fontSize: '1.25rem',
     },
+    '& .Mui-error': {
+      color: 'red',
+    },
+    '& .Mui-error input': {
+      border: '1px solid red',
+    },
+  },
+  fileUpload: {
+    paddingTop: 25,
   },
 }));
 

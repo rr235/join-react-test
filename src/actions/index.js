@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCandidatesListWithScore } from '../helper';
+import { getCandidatesListWithScore, getCandidateScore } from '../helper';
 
 export const IS_LOADING = 'is_loading';
 export const FETCH_CANDIDATES = 'fetch_candidates';
@@ -30,3 +30,15 @@ export const removeCandidate = (email) => (dispatch) =>
 
 export const changeStatus = (info) => (dispatch) =>
   dispatch({ type: CHANGE_STATUS, payload: info });
+
+export const addCandidate = (info) => () => {
+  const score = getCandidateScore(info);
+  const candidate = { ...info, score };
+
+  /* Mock Save */
+  let candidatesList = JSON.parse(sessionStorage.getItem('candidates')) || [];
+  candidatesList.push(candidate);
+  sessionStorage.setItem('candidates', JSON.stringify(candidatesList));
+
+  return true; // Just return true to indicate success. (In real scenario this would probably be a promise.)
+};

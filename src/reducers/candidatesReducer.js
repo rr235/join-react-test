@@ -6,6 +6,7 @@ export default function (state = [], action) {
       return action.payload;
     case REMOVE_CANDIDATE: {
       const newState = state.filter(({ email }) => email !== action.payload);
+
       sessionStorage.setItem('candidates', JSON.stringify(newState)); // DON'T EVER DO THIS KIND OF ACTION IN PRODUCTION CODE ;P
       return newState;
     }
