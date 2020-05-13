@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { shape, string, number, bool, func } from 'prop-types';
+import { shape, string, number, bool, func, arrayOf } from 'prop-types';
 import { Typography, Grid, CircularProgress } from '@material-ui/core';
 import ApplicationCard from '../../components/ApplicationCard';
 import useStyles from './styles';
@@ -58,28 +58,32 @@ const Candidates = ({
 
   return (
     <div className={classes.container}>
-      <Typography variant="h1" className={classes.heading}>
-        Candidates
-      </Typography>
-      <div>
-        {showLoading()}
-        <Grid container spacing={2} direction="column">
-          {listCandidates()}
-        </Grid>
+      <div className={classes.content}>
+        <Typography variant="h1" className={classes.heading}>
+          Candidates
+        </Typography>
+        <div>
+          {showLoading()}
+          <Grid container spacing={2} direction="column">
+            {listCandidates()}
+          </Grid>
+        </div>
       </div>
     </div>
   );
 };
 
 Candidates.propTypes = {
-  candidates: shape({
-    fullName: string,
-    email: string,
-    avatar: string,
-    state: string,
-    applied_on: string,
-    score: number,
-  }),
+  candidates: arrayOf(
+    shape({
+      fullName: string,
+      email: string,
+      avatar: string,
+      state: string,
+      applied_on: string,
+      score: number,
+    })
+  ),
   isLoading: bool,
   fetchCandidates: func.isRequired,
   removeCandidate: func.isRequired,
@@ -87,7 +91,7 @@ Candidates.propTypes = {
 };
 
 Candidates.defaultProps = {
-  candidates: {},
+  candidates: [],
   isLoading: false,
 };
 

@@ -9,7 +9,7 @@ const useStyles = makeStyles(({ spacing }) => ({
   container: {
     backgroundColor: '#F3F4F7',
     padding: 10,
-    height: '100vh',
+    minHeight: '100vh',
   },
   content: {
     maxWidth: 768,

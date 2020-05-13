@@ -7,8 +7,12 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
   container: {
     backgroundColor: '#F3F4F7',
-    padding: '10px',
-    height: '100vh',
+    padding: 10,
+    minHeight: '100vh',
+  },
+  content: {
+    maxWidth: 768,
+    margin: 'auto',
   },
   loading: {
     display: 'flex',
