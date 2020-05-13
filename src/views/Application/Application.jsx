@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
+import { func } from 'prop-types';
 import {
   Typography,
   InputBase,
@@ -222,6 +223,10 @@ const Application = ({ addCandidate }) => {
       </div>
     </div>
   );
+};
+
+Application.propTypes = {
+  addCandidate: func.isRequired,
 };
 
 const mapStateToProps = ({ addCandidate }) => ({ addCandidate });

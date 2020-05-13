@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(({ spacing }) => ({
   avatar: {
@@ -19,18 +18,20 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
   progressBackground: {
     backgroundColor: '#E7E9ED',
-    height: '45px',
-    width: '45px',
+    height: 45,
+    width: 45,
     position: 'absolute',
-    borderRadius: '45px',
+    borderRadius: 45,
   },
   progressCircle: {
     color: ({ score }) => {
       if (score < 20) {
         return '#f94f53';
-      } else if (score < 50) {
+      }
+      if (score < 50) {
         return '#fd9833';
-      } else if (score < 100) {
+      }
+      if (score < 100) {
         return '#1a86ff';
       }
       return 'green';
@@ -38,16 +39,16 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
   progress: {
     display: 'flex',
-    borderRadius: '40px',
+    borderRadius: 40,
     backgroundColor: '#fff',
     position: 'absolute',
-    height: '37px',
-    width: '37px',
+    height: 37,
+    width: 37,
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: '0.8rem',
-    left: '4px',
-    top: '4px',
+    left: 4,
+    top: 4,
   },
   status: {
     display: 'inline-block',
@@ -64,8 +65,8 @@ const useStyles = makeStyles(({ spacing }) => ({
           return '#f3f4f7';
       }
     },
-    padding: '8px',
-    borderRadius: '6px',
+    padding: 8,
+    borderRadius: 6,
     marginBottom: spacing(1),
     fontSize: '0.75rem',
     textTransform: 'uppercase',

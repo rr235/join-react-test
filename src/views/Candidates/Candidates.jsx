@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { shape, string, number, bool, func } from 'prop-types';
 import { Typography, Grid, CircularProgress } from '@material-ui/core';
 import ApplicationCard from '../../components/ApplicationCard';
 import useStyles from './styles';
@@ -28,14 +29,17 @@ const Candidates = ({
 
   const listCandidates = () =>
     candidates.map(
-      ({ fullName, email, avatar, state, applied_on, score }, index) => (
+      (
+        { fullName, email, avatar, state, applied_on: appliedOn, score },
+        index
+      ) => (
         <Grid item xs={12} key={index}>
           <ApplicationCard
             name={fullName}
             email={email}
             avatar={avatar}
             status={state.toLowerCase()}
-            date={applied_on}
+            date={appliedOn}
             score={score}
             onDelete={onDeleteHandler}
             onStatusChange={onStatusChangeHandler}
@@ -65,6 +69,26 @@ const Candidates = ({
       </div>
     </div>
   );
+};
+
+Candidates.propTypes = {
+  candidates: shape({
+    fullName: string,
+    email: string,
+    avatar: string,
+    state: string,
+    applied_on: string,
+    score: number,
+  }),
+  isLoading: bool,
+  fetchCandidates: func.isRequired,
+  removeCandidate: func.isRequired,
+  changeStatus: func.isRequired,
+};
+
+Candidates.defaultProps = {
+  candidates: {},
+  isLoading: false,
 };
 
 const mapStateToProps = ({

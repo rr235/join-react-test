@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { string, number, func } from 'prop-types';
 import {
   Card,
   CardContent,
@@ -41,12 +42,16 @@ const ApplicationCard = ({
 
   const handleDelete = () => {
     handleClose();
-    onDelete(email);
+    if (onDelete) {
+      onDelete(email);
+    }
   };
 
-  const handleStatusChange = (status) => {
+  const handleStatusChange = (newStatus) => {
     handleClose();
-    onStatusChange(email, status);
+    if (onStatusChange) {
+      onStatusChange(email, newStatus);
+    }
   };
 
   return (
@@ -64,7 +69,7 @@ const ApplicationCard = ({
               </Grid>
               <Grid item xs={2}>
                 <div className={classes.progressBackground}>
-                  <span className={classes.progress}>{score}%</span>
+                  <span className={classes.progress}>{`${score}%`}</span>
                 </div>
                 <CircularProgress
                   variant="static"
@@ -77,7 +82,7 @@ const ApplicationCard = ({
           </Grid>
           <Grid item>
             <span className={classes.status}>{status}</span>
-            <div className={classes.info}> Application info: {date}</div>
+            <div className={classes.info}>{`Application info: ${date}`}</div>
           </Grid>
           <Grid item className={classes.actions}>
             <IconButton
@@ -117,6 +122,28 @@ const ApplicationCard = ({
       </CardContent>
     </Card>
   );
+};
+
+ApplicationCard.propTypes = {
+  name: string,
+  email: string,
+  avatar: string,
+  status: string,
+  date: string,
+  score: number,
+  onStatusChange: func,
+  onDelete: func,
+};
+
+ApplicationCard.defaultProps = {
+  name: '',
+  email: '',
+  avatar: '',
+  status: '',
+  date: '',
+  score: 0,
+  onStatusChange: func,
+  onDelete: func,
 };
 
 export default ApplicationCard;
