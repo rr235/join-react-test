@@ -27,7 +27,7 @@ const ApplicationCard = ({
   onStatusChange,
   onDelete,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles({ status });
   const [anchorEl, setAnchorEl] = useState(null);
   const menuId = `menu-${Date.now()}`;
 

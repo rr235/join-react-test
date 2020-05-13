@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(({ spacing }) => ({
+const useStyles = makeStyles(({ spacing, status }) => ({
   avatar: {
     width: spacing(5.5),
     height: spacing(5.5),
@@ -41,7 +41,19 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
   status: {
     display: 'inline-block',
-    backgroundColor: '#F3F4F7',
+    backgroundColor: ({ status }) => {
+      switch (status) {
+        case 'in review':
+          return '#e6f3ff';
+        case 'hired':
+          return '#e6ffe7';
+        case 'not a fit':
+          return '#feeced';
+        case 'submitted':
+        default:
+          return '#f3f4f7';
+      }
+    },
     padding: '8px',
     borderRadius: '6px',
     marginBottom: spacing(1),
