@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 
-const useStyles = makeStyles(({ spacing, status }) => ({
+const useStyles = makeStyles(({ spacing }) => ({
   avatar: {
     width: spacing(5.5),
     height: spacing(5.5),
@@ -24,7 +25,16 @@ const useStyles = makeStyles(({ spacing, status }) => ({
     borderRadius: '45px',
   },
   progressCircle: {
-    color: 'orange',
+    color: ({ score }) => {
+      if (score < 20) {
+        return '#f94f53';
+      } else if (score < 50) {
+        return '#fd9833';
+      } else if (score < 100) {
+        return '#1a86ff';
+      }
+      return 'green';
+    },
   },
   progress: {
     display: 'flex',

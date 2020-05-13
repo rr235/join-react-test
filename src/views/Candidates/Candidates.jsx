@@ -27,20 +27,22 @@ const Candidates = ({
   };
 
   const listCandidates = () =>
-    candidates.map(({ fullName, email, avatar, state, applied_on }, index) => (
-      <Grid item xs={12} key={index}>
-        <ApplicationCard
-          name={fullName}
-          email={email}
-          avatar={avatar}
-          status={state.toLowerCase()}
-          date={applied_on}
-          progress={75}
-          onDelete={onDeleteHandler}
-          onStatusChange={onStatusChangeHandler}
-        />
-      </Grid>
-    ));
+    candidates.map(
+      ({ fullName, email, avatar, state, applied_on, score }, index) => (
+        <Grid item xs={12} key={index}>
+          <ApplicationCard
+            name={fullName}
+            email={email}
+            avatar={avatar}
+            status={state.toLowerCase()}
+            date={applied_on}
+            score={score}
+            onDelete={onDeleteHandler}
+            onStatusChange={onStatusChangeHandler}
+          />
+        </Grid>
+      )
+    );
 
   const showLoading = () =>
     isLoading ? (

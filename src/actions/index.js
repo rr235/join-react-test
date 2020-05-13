@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getCandidatesListWithScore } from '../helper';
 
 export const IS_LOADING = 'is_loading';
 export const FETCH_CANDIDATES = 'fetch_candidates';
@@ -16,8 +17,8 @@ export const fetchCandidates = () => async (dispatch) => {
     const { data } = await axios.get(
       'https://candidates.free.beeceptor.com/api/candidate'
     );
-    candidatesList = data;
-    sessionStorage.setItem('candidates', JSON.stringify(data));
+    candidatesList = getCandidatesListWithScore(data);
+    sessionStorage.setItem('candidates', JSON.stringify(candidatesList));
     dispatch({ type: IS_LOADING, payload: false });
   }
 

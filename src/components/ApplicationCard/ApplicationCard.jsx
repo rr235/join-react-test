@@ -23,11 +23,11 @@ const ApplicationCard = ({
   avatar,
   status,
   date,
-  progress,
+  score,
   onStatusChange,
   onDelete,
 }) => {
-  const classes = useStyles({ status });
+  const classes = useStyles({ status, score });
   const [anchorEl, setAnchorEl] = useState(null);
   const menuId = `menu-${Date.now()}`;
 
@@ -64,11 +64,11 @@ const ApplicationCard = ({
               </Grid>
               <Grid item xs={2}>
                 <div className={classes.progressBackground}>
-                  <span className={classes.progress}>{progress}%</span>
+                  <span className={classes.progress}>{score}%</span>
                 </div>
                 <CircularProgress
                   variant="static"
-                  value={progress}
+                  value={score}
                   className={classes.progressCircle}
                   size={45}
                 />
