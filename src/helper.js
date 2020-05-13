@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export const getCandidateScore = (candidate) => {
   let score = 0;
   if (candidate.fullName.trim()) {
@@ -19,8 +21,11 @@ export const getCandidateScore = (candidate) => {
   return score;
 };
 
-export const getCandidatesListWithScore = (candidatesList) =>
+export const createCandidateId = () => uuidv4();
+
+export const setCandidateScoreAndId = (candidatesList) =>
   candidatesList.map((candidate) => {
     const score = getCandidateScore(candidate);
-    return { ...candidate, score };
+    const id = createCandidateId();
+    return { ...candidate, score, id };
   });

@@ -19,6 +19,7 @@ const STATUS_SUBMITTED = 'submitted';
 const STATUS_HIRED = 'hired';
 
 const ApplicationCard = ({
+  id,
   name,
   email,
   avatar,
@@ -43,14 +44,14 @@ const ApplicationCard = ({
   const handleDelete = () => {
     handleClose();
     if (onDelete) {
-      onDelete(email);
+      onDelete(id);
     }
   };
 
   const handleStatusChange = (newStatus) => {
     handleClose();
     if (onStatusChange) {
-      onStatusChange(email, newStatus);
+      onStatusChange(id, newStatus);
     }
   };
 
@@ -125,6 +126,7 @@ const ApplicationCard = ({
 };
 
 ApplicationCard.propTypes = {
+  id: string,
   name: string,
   email: string,
   avatar: string,
@@ -136,6 +138,7 @@ ApplicationCard.propTypes = {
 };
 
 ApplicationCard.defaultProps = {
+  id: '',
   name: '',
   email: '',
   avatar: '',

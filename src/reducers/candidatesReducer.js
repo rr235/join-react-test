@@ -5,15 +5,13 @@ export default function (state = [], action) {
     case FETCH_CANDIDATES:
       return action.payload;
     case REMOVE_CANDIDATE: {
-      const newState = state.filter(({ email }) => email !== action.payload);
+      const newState = state.filter(({ id }) => id !== action.payload);
 
       sessionStorage.setItem('candidates', JSON.stringify(newState)); // DON'T EVER DO THIS KIND OF ACTION IN PRODUCTION CODE ;P
       return newState;
     }
     case CHANGE_STATUS: {
-      const candidate = state.find(
-        ({ email }) => email === action.payload.email
-      );
+      const candidate = state.find(({ id }) => id === action.payload.id);
       const index = state.indexOf(candidate);
       const newState = [...state];
 

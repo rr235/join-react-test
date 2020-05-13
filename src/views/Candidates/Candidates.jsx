@@ -19,22 +19,23 @@ const Candidates = ({
     fetchCandidates();
   }, [fetchCandidates]);
 
-  const onDeleteHandler = (email) => {
-    removeCandidate(email);
+  const onDeleteHandler = (id) => {
+    removeCandidate(id);
   };
 
-  const onStatusChangeHandler = (email, status) => {
-    changeStatus({ email, status });
+  const onStatusChangeHandler = (id, status) => {
+    changeStatus({ id, status });
   };
 
   const listCandidates = () =>
     candidates.map(
       (
-        { fullName, email, avatar, state, applied_on: appliedOn, score },
+        { id, fullName, email, avatar, state, applied_on: appliedOn, score },
         index
       ) => (
         <Grid item xs={12} key={index}>
           <ApplicationCard
+            id={id}
             name={fullName}
             email={email}
             avatar={avatar}
@@ -76,6 +77,7 @@ const Candidates = ({
 Candidates.propTypes = {
   candidates: arrayOf(
     shape({
+      id: string,
       fullName: string,
       email: string,
       avatar: string,

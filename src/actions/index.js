@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { getCandidatesListWithScore, getCandidateScore } from '../helper';
+import {
+  setCandidateScoreAndId,
+  getCandidateScore,
+  createCandidateId,
+} from '../helper';
 
 export const IS_LOADING = 'is_loading';
 export const FETCH_CANDIDATES = 'fetch_candidates';
@@ -17,7 +21,7 @@ export const fetchCandidates = () => async (dispatch) => {
     const { data } = await axios.get(
       'https://candidates.free.beeceptor.com/api/candidate'
     );
-    candidatesList = getCandidatesListWithScore(data);
+    candidatesList = setCandidateScoreAndId(data);
     sessionStorage.setItem('candidates', JSON.stringify(candidatesList));
     dispatch({ type: IS_LOADING, payload: false });
   }
@@ -25,15 +29,16 @@ export const fetchCandidates = () => async (dispatch) => {
   dispatch({ type: FETCH_CANDIDATES, payload: candidatesList });
 };
 
-export const removeCandidate = (email) => (dispatch) =>
-  dispatch({ type: REMOVE_CANDIDATE, payload: email });
+export const removeCandidate = (id) => (dispatch) =>
+  dispatch({ type: REMOVE_CANDIDATE, payload: id });
 
 export const changeStatus = (info) => (dispatch) =>
   dispatch({ type: CHANGE_STATUS, payload: info });
 
 export const addCandidate = (info) => () => {
   const score = getCandidateScore(info);
-  const candidate = { ...info, score };
+  const id = createCandidateId();
+  const candidate = { ...info, score, id };
 
   /* Mock Save */
   const candidatesList = JSON.parse(sessionStorage.getItem('candidates')) || [];
