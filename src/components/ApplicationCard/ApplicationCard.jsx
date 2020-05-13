@@ -12,8 +12,10 @@ import {
 import { MoreHoriz } from '@material-ui/icons';
 import useStyles from './styles';
 
-const STATUS_NOT_FIT = 'STATUS_NOT_FIT';
-const STATUS_IN_REVIEW = 'STATUS_IN_REVIEW';
+const STATUS_NOT_FIT = 'not a fit';
+const STATUS_IN_REVIEW = 'in review';
+const STATUS_SUBMITTED = 'submitted';
+const STATUS_HIRED = 'hired';
 
 const ApplicationCard = ({
   name,
@@ -44,7 +46,7 @@ const ApplicationCard = ({
 
   const handleStatusChange = (status) => {
     handleClose();
-    onStatusChange(status);
+    onStatusChange(email, status);
   };
 
   return (
@@ -93,12 +95,21 @@ const ApplicationCard = ({
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => handleStatusChange(STATUS_IN_REVIEW)}>
-                In Review
-              </MenuItem>
-              <MenuItem onClick={() => handleStatusChange(STATUS_NOT_FIT)}>
-                Not a Fit
-              </MenuItem>
+              {status === STATUS_SUBMITTED && (
+                <MenuItem onClick={() => handleStatusChange(STATUS_IN_REVIEW)}>
+                  In Review
+                </MenuItem>
+              )}
+              {status === STATUS_IN_REVIEW && (
+                <MenuItem onClick={() => handleStatusChange(STATUS_NOT_FIT)}>
+                  Not a Fit
+                </MenuItem>
+              )}
+              {status === STATUS_IN_REVIEW && (
+                <MenuItem onClick={() => handleStatusChange(STATUS_HIRED)}>
+                  Hire
+                </MenuItem>
+              )}
               <MenuItem onClick={handleDelete}>Delete</MenuItem>
             </Menu>
           </Grid>
@@ -109,4 +120,4 @@ const ApplicationCard = ({
 };
 
 export default ApplicationCard;
-export { STATUS_IN_REVIEW, STATUS_NOT_FIT };
+export { STATUS_IN_REVIEW, STATUS_NOT_FIT, STATUS_SUBMITTED, STATUS_HIRED };

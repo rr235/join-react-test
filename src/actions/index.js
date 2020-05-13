@@ -4,6 +4,7 @@ export const IS_LOADING = 'is_loading';
 export const FETCH_CANDIDATES = 'fetch_candidates';
 export const ADD_CANDIDATE = 'add_candidate';
 export const REMOVE_CANDIDATE = 'remove_candidate';
+export const CHANGE_STATUS = 'change_status';
 
 export const fetchCandidates = () => async (dispatch) => {
   // get candidates list from session
@@ -23,16 +24,8 @@ export const fetchCandidates = () => async (dispatch) => {
   dispatch({ type: FETCH_CANDIDATES, payload: candidatesList });
 };
 
-export const removeCandidate = (email) => (dispatch) => {
-  /* Mock api action Start */
-  const candidatesList = JSON.parse(sessionStorage.getItem('candidates'));
-  sessionStorage.setItem(
-    'candidates',
-    JSON.stringify(
-      candidatesList.filter((candidate) => email !== candidate.email)
-    )
-  );
-  /* Mock api action End */
-
+export const removeCandidate = (email) => (dispatch) =>
   dispatch({ type: REMOVE_CANDIDATE, payload: email });
-};
+
+export const changeStatus = (info) => (dispatch) =>
+  dispatch({ type: CHANGE_STATUS, payload: info });
