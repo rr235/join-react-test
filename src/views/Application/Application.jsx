@@ -16,6 +16,7 @@ import {
 import { Alert } from '@material-ui/lab';
 import { withStyles } from '@material-ui/core/styles';
 import TelephoneNumberInput from './components/TelephoneNumberInput';
+import { STATUS_SUBMITTED } from '../../components/ApplicationCard';
 import useStyles, { InputStyle } from './styles';
 import { addCandidate } from '../../actions';
 
@@ -69,7 +70,7 @@ const Application = ({ addCandidate }) => {
         password,
         fullName: `${firstName} ${lastName}`,
         phone,
-        state: 'submitted',
+        state: STATUS_SUBMITTED,
         applied_on: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
         avatar: avatarUrl,
       };
@@ -183,7 +184,7 @@ const Application = ({ addCandidate }) => {
             error={termsError}
           >
             <FormControlLabel
-              control={<Checkbox name="terms" />}
+              control={<Checkbox name="terms" id="terms" />}
               label="I agrees to JOIN's terms and conditions as well as privacy policy."
               className={classes.terms}
               checked={termsAccepted}

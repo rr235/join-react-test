@@ -56,7 +56,7 @@ const ApplicationCard = ({
   };
 
   return (
-    <Card>
+    <Card id={`card-${id}`}>
       <CardContent>
         <Grid container direction="column">
           <Grid item>
@@ -83,7 +83,7 @@ const ApplicationCard = ({
           </Grid>
           <Grid item>
             <span className={classes.status}>{status}</span>
-            <div className={classes.info}>{`Application info: ${date}`}</div>
+            <div className={classes.info}>{`Applied on: ${date}`}</div>
           </Grid>
           <Grid item className={classes.actions}>
             <IconButton
@@ -102,21 +102,32 @@ const ApplicationCard = ({
               onClose={handleClose}
             >
               {status === STATUS_SUBMITTED && (
-                <MenuItem onClick={() => handleStatusChange(STATUS_IN_REVIEW)}>
+                <MenuItem
+                  onClick={() => handleStatusChange(STATUS_IN_REVIEW)}
+                  id={`${id}-in-review`}
+                >
                   In Review
                 </MenuItem>
               )}
               {status === STATUS_IN_REVIEW && (
-                <MenuItem onClick={() => handleStatusChange(STATUS_NOT_FIT)}>
+                <MenuItem
+                  onClick={() => handleStatusChange(STATUS_NOT_FIT)}
+                  id={`${id}-not-a-fit`}
+                >
                   Not a Fit
                 </MenuItem>
               )}
               {status === STATUS_IN_REVIEW && (
-                <MenuItem onClick={() => handleStatusChange(STATUS_HIRED)}>
+                <MenuItem
+                  onClick={() => handleStatusChange(STATUS_HIRED)}
+                  id={`${id}-hire`}
+                >
                   Hire
                 </MenuItem>
               )}
-              <MenuItem onClick={handleDelete}>Delete</MenuItem>
+              <MenuItem onClick={handleDelete} id={`${id}-delete`}>
+                Delete
+              </MenuItem>
             </Menu>
           </Grid>
         </Grid>

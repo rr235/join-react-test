@@ -6,10 +6,12 @@
     "describe": false,
     "it": false,
     "expect": false,
+    "before": false,
     "beforeAll": false,
     "beforeEach": false,
     "document": false,
-    "sessionStorage": false
+    "sessionStorage": false,
+    "cy": false
   },
   "rules": {
     "no-shadow": 1

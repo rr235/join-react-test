@@ -44,6 +44,7 @@ const Candidates = ({
             score={score}
             onDelete={onDeleteHandler}
             onStatusChange={onStatusChangeHandler}
+            className={classes.applicationCard}
           />
         </Grid>
       )
