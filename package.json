@@ -6,7 +6,9 @@
   "author": "Rahul <rash235r@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:dev": "webpack-dev-server --mode development",
+    "start:app": "webpack-dev-server --mode development",
+    "start:server": "node ./src/server/index.js",
+    "start:dev": "concurrently 'yarn start:server' 'yarn start:app'",
     "lint": "eslint src/**/*.js*",
     "cypress": "cypress open"
   },
@@ -15,6 +17,9 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.53",
     "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -34,6 +39,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
+    "concurrently": "^5.2.0",
     "cypress": "^4.5.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",

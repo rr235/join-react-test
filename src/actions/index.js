@@ -1,49 +1,44 @@
 import axios from 'axios';
-import {
-  setCandidateScoreAndId,
-  getCandidateScore,
-  createCandidateId,
-} from '../helper';
 
 export const IS_LOADING = 'is_loading';
 export const FETCH_CANDIDATES = 'fetch_candidates';
 export const ADD_CANDIDATE = 'add_candidate';
 export const REMOVE_CANDIDATE = 'remove_candidate';
-export const CHANGE_STATUS = 'change_status';
+export const UPDATE_CANDIDATE = 'update_candidate';
 
 export const fetchCandidates = () => async (dispatch) => {
-  // get candidates list from session
-  let candidatesList = JSON.parse(sessionStorage.getItem('candidates'));
+  dispatch({ type: IS_LOADING, payload: true });
+  const { data } = await axios.get('http://localhost:5000/candidates');
+  dispatch({ type: IS_LOADING, payload: false });
 
-  // if the list is empty fetch the list from the api
-  if (!candidatesList) {
-    dispatch({ type: IS_LOADING, payload: true });
-    const { data } = await axios.get(
-      'https://candidates.free.beeceptor.com/api/candidate'
-    );
-    candidatesList = setCandidateScoreAndId(data);
-    sessionStorage.setItem('candidates', JSON.stringify(candidatesList));
-    dispatch({ type: IS_LOADING, payload: false });
-  }
-
-  dispatch({ type: FETCH_CANDIDATES, payload: candidatesList });
+  dispatch({ type: FETCH_CANDIDATES, payload: data });
 };
 
-export const removeCandidate = (id) => (dispatch) =>
-  dispatch({ type: REMOVE_CANDIDATE, payload: id });
+export const removeCandidate = (id) => async (dispatch) => {
+  try {
+    await axios.delete('http://localhost:5000/removeCandidate', id);
+    dispatch({ type: REMOVE_CANDIDATE, payload: id });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-export const changeStatus = (info) => (dispatch) =>
-  dispatch({ type: CHANGE_STATUS, payload: info });
+export const changeStatus = (info) => async (dispatch) => {
+  try {
+    const { data } = await axios.patch(
+      'http://localhost:5000/updateCandidateStatus',
+      info
+    );
+    dispatch({ type: UPDATE_CANDIDATE, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-export const addCandidate = (info) => () => {
-  const score = getCandidateScore(info);
-  const id = createCandidateId();
-  const candidate = { ...info, score, id };
-
-  /* Mock Save */
-  const candidatesList = JSON.parse(sessionStorage.getItem('candidates')) || [];
-  candidatesList.push(candidate);
-  sessionStorage.setItem('candidates', JSON.stringify(candidatesList));
-
-  return true; // Just return true to indicate success. (In real scenario this would probably be a promise.)
+export const addCandidate = (candidate) => async (dispatch) => {
+  return axios
+    .post('http://localhost:5000/addCandidate', candidate)
+    .then(({ data }) => {
+      dispatch({ type: ADD_CANDIDATE, payload: data });
+    });
 };

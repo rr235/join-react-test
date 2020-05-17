@@ -1,6 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require('uuid');
 
-export const getCandidateScore = (candidate) => {
+const createCandidateId = () => uuidv4();
+
+const getCandidateScore = (candidate) => {
   let score = 0;
   if (candidate.fullName.trim()) {
     score += 10;
@@ -21,11 +23,15 @@ export const getCandidateScore = (candidate) => {
   return score;
 };
 
-export const createCandidateId = () => uuidv4();
-
-export const setCandidateScoreAndId = (candidatesList) =>
+const setCandidateScoreAndId = (candidatesList) =>
   candidatesList.map((candidate) => {
-    const score = getCandidateScore(candidate);
     const id = createCandidateId();
+    const score = getCandidateScore(candidate);
     return { ...candidate, score, id };
   });
+
+module.exports = {
+  createCandidateId,
+  getCandidateScore,
+  setCandidateScoreAndId,
+};

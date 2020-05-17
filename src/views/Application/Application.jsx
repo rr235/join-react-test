@@ -37,8 +37,11 @@ const Application = ({ addCandidate }) => {
       terms: { value: false, isRequired: true },
     },
   };
-  const [showNotification, setShowNotification] = useState(false);
   const [formData, setFromData] = useState(initialFormValue);
+  const [notification, setNotification] = useState({
+    message: '',
+    success: true,
+  });
 
   const {
     email,
@@ -98,8 +101,14 @@ const Application = ({ addCandidate }) => {
         applied_on: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
       };
 
-      addCandidate(candidate);
-      setShowNotification(true);
+      addCandidate(candidate).then(
+        () => {
+          setNotification({ message: 'Data Saved', success: true });
+        },
+        (error) => {
+          setNotification({ message: error.message, success: false });
+        }
+      );
       clearFields();
     }
   };
@@ -235,15 +244,15 @@ const Application = ({ addCandidate }) => {
         </form>
         <Snackbar
           autoHideDuration={6000}
-          open={showNotification}
-          onClose={() => setShowNotification(false)}
+          open={!!notification.message}
+          onClose={() => setNotification({ message: '' })}
         >
           <Alert
-            severity="success"
+            severity={notification.success ? 'success' : 'error'}
             variant="filled"
-            onClose={() => setShowNotification(false)}
+            onClose={() => setNotification({ message: '' })}
           >
-            Data Saved!
+            {notification.message}
           </Alert>
         </Snackbar>
       </div>

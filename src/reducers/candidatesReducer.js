@@ -1,4 +1,8 @@
-import { FETCH_CANDIDATES, REMOVE_CANDIDATE, CHANGE_STATUS } from '../actions';
+import {
+  FETCH_CANDIDATES,
+  REMOVE_CANDIDATE,
+  UPDATE_CANDIDATE,
+} from '../actions';
 
 export default function (state = [], action) {
   switch (action.type) {
@@ -6,21 +10,16 @@ export default function (state = [], action) {
       return action.payload;
     case REMOVE_CANDIDATE: {
       const newState = state.filter(({ id }) => id !== action.payload);
-
-      sessionStorage.setItem('candidates', JSON.stringify(newState)); // DON'T EVER DO THIS KIND OF ACTION IN PRODUCTION CODE ;P
       return newState;
     }
-    case CHANGE_STATUS: {
+    case UPDATE_CANDIDATE: {
       const candidate = state.find(({ id }) => id === action.payload.id);
       const index = state.indexOf(candidate);
       const newState = [...state];
 
-      candidate.state = action.payload.status;
-
       // replace the entry with updated state
-      newState.splice(index, 1, candidate);
+      newState.splice(index, 1, action.payload);
 
-      sessionStorage.setItem('candidates', JSON.stringify(newState)); // DON'T EVER DO THIS KIND OF ACTION IN PRODUCTION CODE ;P
       return newState;
     }
     default:
