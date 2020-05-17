@@ -23,56 +23,79 @@ import { addCandidate } from '../../actions';
 const StyledInput = withStyles(InputStyle)(InputBase);
 
 const Application = ({ addCandidate }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [termsError, setTermsError] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const avatarRef = useRef(null);
-
   const classes = useStyles();
+  const avatarRef = useRef(null);
+  const initialFormValue = {
+    isValid: false,
+    controls: {
+      email: { value: '', isRequired: true },
+      password: { value: '' },
+      firstName: { value: '' },
+      lastName: { value: '' },
+      phone: { value: '' },
+      avatar: { value: '' },
+      terms: { value: false, isRequired: true },
+    },
+  };
+  const [showNotification, setShowNotification] = useState(false);
+  const [formData, setFromData] = useState(initialFormValue);
+
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    phone,
+    terms,
+    avatar,
+  } = formData.controls;
+
+  const handleFormChange = (event) => {
+    const { name, type, checked } = event.target;
+    let { value } = event.target;
+
+    if (type === 'checkbox') {
+      value = checked;
+    }
+
+    const controls = {
+      ...formData.controls,
+      [name]: {
+        ...formData.controls[name],
+        error: formData.controls[name].isRequired && !value,
+        value,
+      },
+    };
+
+    const isValid = Object.keys(controls).reduce((accumulator, key) => {
+      const field = controls[key];
+      return field.isRequired ? accumulator && !field.error : accumulator;
+    }, true);
+
+    setFromData({
+      controls,
+      isValid,
+    });
+  };
 
   const clearFields = () => {
     avatarRef.current.value = null;
-    setEmail('');
-    setPassword('');
-    setFirstName('');
-    setLastName('');
-    setPhone('');
-    setAvatarUrl('');
-    setTermsAccepted(false);
+    setFromData(initialFormValue);
   };
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
-    let hasError = false;
-
-    if (!email) {
-      hasError = true;
-      setEmailError(true);
-    }
-
-    if (!termsAccepted) {
-      hasError = true;
-      setTermsError(true);
-    }
-
-    if (!hasError) {
+    if (formData.isValid) {
       const date = new Date();
       const candidate = {
-        email,
-        password,
-        fullName: `${firstName} ${lastName}`,
-        phone,
+        email: email.value,
+        password: password.value,
+        fullName: `${firstName.value} ${lastName.value}`,
+        phone: phone.value,
+        avatar: avatar.value,
         state: STATUS_SUBMITTED,
         applied_on: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
-        avatar: avatarUrl,
       };
 
       addCandidate(candidate);
@@ -82,8 +105,11 @@ const Application = ({ addCandidate }) => {
   };
 
   const onFileUpload = (event) => {
+    const { name } = event.target;
     const reader = new FileReader();
-    reader.onload = (e) => setAvatarUrl(e.target.result);
+    reader.onload = (e) => {
+      handleFormChange({ target: { name, value: e.target.result } });
+    };
     reader.readAsDataURL(event.target.files[0]);
   };
 
@@ -97,19 +123,17 @@ const Application = ({ addCandidate }) => {
           <FormControl
             fullWidth
             className={classes.formControl}
-            error={emailError}
+            error={email.error}
           >
             <InputLabel shrink htmlFor="email">
               Your E-mail
             </InputLabel>
             <StyledInput
               id="email"
+              name="email"
               placeholder="john.doe@join.com"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setEmailError(false);
-              }}
+              value={email.value}
+              onChange={handleFormChange}
             />
           </FormControl>
           <FormControl fullWidth className={classes.formControl}>
@@ -118,10 +142,11 @@ const Application = ({ addCandidate }) => {
             </InputLabel>
             <StyledInput
               id="password"
+              name="password"
               placeholder="Choose a password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={password.value}
+              onChange={handleFormChange}
             />
           </FormControl>
           <Grid container spacing={2}>
@@ -132,9 +157,10 @@ const Application = ({ addCandidate }) => {
                 </InputLabel>
                 <StyledInput
                   id="firstName"
+                  name="firstName"
                   placeholder="John"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName.value}
+                  onChange={handleFormChange}
                 />
               </FormControl>
             </Grid>
@@ -145,9 +171,10 @@ const Application = ({ addCandidate }) => {
                 </InputLabel>
                 <StyledInput
                   id="lastName"
+                  name="lastName"
                   placeholder="Doe"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName.value}
+                  onChange={handleFormChange}
                 />
               </FormControl>
             </Grid>
@@ -157,12 +184,12 @@ const Application = ({ addCandidate }) => {
               Telephone Number
             </InputLabel>
             <StyledInput
-              id="telephone"
-              name="telephoneNumber"
+              id="phone"
+              name="phone"
               placeholder="0123 1122 890"
               inputComponent={TelephoneNumberInput}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={phone.value}
+              onChange={handleFormChange}
             />
           </FormControl>
           <FormControl fullWidth className={classes.formControl}>
@@ -172,6 +199,7 @@ const Application = ({ addCandidate }) => {
             <div className={classes.fileUpload}>
               <input
                 id="avatar"
+                name="avatar"
                 type="file"
                 onChange={onFileUpload}
                 ref={avatarRef}
@@ -181,19 +209,16 @@ const Application = ({ addCandidate }) => {
           <FormControl
             fullWidth
             className={classes.formControl}
-            error={termsError}
+            error={terms.error}
           >
             <FormControlLabel
               control={<Checkbox name="terms" id="terms" />}
               label="I agrees to JOIN's terms and conditions as well as privacy policy."
               className={classes.terms}
-              checked={termsAccepted}
-              onChange={(e) => {
-                setTermsAccepted(e.target.checked);
-                setTermsError(false);
-              }}
+              checked={terms.value}
+              onChange={handleFormChange}
             />
-            {termsError && (
+            {terms.error && (
               <FormHelperText>
                 Please accept terms and conditions.
               </FormHelperText>
